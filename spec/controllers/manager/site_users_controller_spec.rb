@@ -48,7 +48,7 @@ describe Manager::SiteUsersController do
     it "should destroy site user" do
       session[:accessible_appid] = 1
 
-      delete :destroy, { :id => 1 }
+      delete :destroy, { :id => 1, :groupId => 1 }
 
       response.should be_success
       parsed = JSON.parse(response.body)
@@ -56,7 +56,7 @@ describe Manager::SiteUsersController do
     end
 
     it "should not destroy site user if appid is nil" do
-      delete :destroy, { :id => 1 }
+      delete :destroy, { :id => 1, :groupId => 1 }
 
       response.should be_success
       parsed = JSON.parse(response.body)

@@ -44,10 +44,13 @@ class Manager::SiteUsersController < ApplicationController
   # DELETE site_user(:id = 1)
   def destroy
     begin
-      siteUser = SiteUser.first({ :conditions =>  ['sites_id = ? and users_id = ?', session[:accessible_appid], params[:id] ]})
-      siteUser.destroy
-
-      render :json => { :status => 'success' }
+      siteUser = SiteUser.first({ :conditions =>  ['sites_id = ? and users_id = ? and roles_id = ?', session[:accessible_appid], params[:id], params[:groupId] ]})
+      if (!siteUser.nil?)
+        siteUser.destroy
+        render :json => { :status => 'success' }
+      else
+        render :json => { :status => 'failure', :message => "user doesn't exist" }
+      end
     rescue Exception => ex
       render :json => { :status => 'failure', :message => ex.message }
     end

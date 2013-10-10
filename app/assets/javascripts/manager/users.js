@@ -10,6 +10,7 @@ function getSelectedGroupFromList() {
 
 function refreshUserListForGroup(groupId) {
     $.getJSON("/manager/u/services/list/" + groupId,function (response) {
+        $("#overlay").fadeIn("fast");
         $("#uList li:not(:first)").remove();
 
         if (response.status == "success") {
@@ -32,10 +33,16 @@ function refreshUserListForGroup(groupId) {
 
                 $("#uList li:first").after(cloned);
             }
+
+            $("#overlay").fadeOut("fast");
         }
         else
+        {
+            $("#overlay").fadeOut("fast");
             Messenger().post("Unable to retrieve a list of users");
+        }
     }).error(function () {
+            $("#overlay").fadeOut("fast");
             Messenger().post("Unable to contact server");
         });
 
@@ -225,6 +232,9 @@ $(function () {
             url: "/manager/site_users/" + userId,
             type: "DELETE",
             cache: false,
+            data: {
+                "groupId" : getSelectedGroupFromList()
+            },
             beforeSend: function () {
                 $("#userDeleteClose").attr("disabled", "disabled");
                 $this.attr("disabled", "disabled");

@@ -76,10 +76,10 @@
 
 <div class="center text-center" style="padding:128px 0 128px 0;">
   <% if (User.count == 0) %>
-      <h3 style="margin: 32px 0 32px 0;color: white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Welcome to Alliance CMS</h3>
+      <h3 style="margin: 32px 0 32px 0;color: white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Welcome to Rx CMS</h3>
       <h5 style="color:white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Create an administrator account</h5>
   <% else %>
-      <h3 style="margin: 32px 0 32px 0;color: white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Welcome to Alliance CMS</h3>
+      <h3 style="margin: 32px 0 32px 0;color: white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Welcome to Rx CMS</h3>
   <% end %>
 
   <form id="loginForm" name="loginForm" action="/auth/local" method="post">
@@ -144,10 +144,9 @@
 
     <input id="loginFormSubmit" type="submit" value="<%= User.count == 0 ? 'create' : 'log in' %>" class="btn btn-primary"/>&nbsp;
     <% if (User.count > 0) %>
-        <a href="#userRegistration" class="btn btn" data-toggle="modal" data-backdrop="static" data-keyboard="false">register</a>
+        <a href="#userRegistration" class="btn btn" data-toggle="modal" data-backdrop="static" data-keyboard="false"><i class="icon-plus"></i></a>
 
-        <a href="#resetPasswordModal" role="button" id="loginFormForgetSth" class="btn btn" data-toggle="modal" data-backdrop="static" data-keyboard="false">forget
-          password?</a>
+        <a href="#resetPasswordModal" role="button" id="loginFormForgetSth" class="btn btn" data-toggle="modal" data-backdrop="static" data-keyboard="false"><i class="icon-question-sign"></i></a>
     <% end %>
   </form>
 </div>
