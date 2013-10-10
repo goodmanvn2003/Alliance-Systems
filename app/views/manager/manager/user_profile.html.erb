@@ -1,0 +1,89 @@
+<div class="container" style="margin-bottom: 25px;">
+    <div class="">
+      <div class="row-fluid">
+        <div class="span12">
+          <div style="margin: 45px 0 0 0;">
+            <div class="row">
+              <div class="span12">
+                <fieldset>
+                  <legend style="font-size:16px;">General information</legend>
+
+                  <div class="row-fluid">
+                    <div class="span3">
+                      <label><strong>Login</strong></label>
+                      <span><a href="javascript:void(0);"><%= @username.html_safe %></a></span>
+                    </div>
+                    <div class="span9">
+                      <label><strong>Email</strong></label>
+                      <span><a id="aEmail" href="javascript:void(0);"><%= @email.html_safe %></a><input id="emailTxt" type="text" style="display:none;width:128px;border:none;outline:none !important;background:transparent;box-shadow:none !important;font-family: 'Courier New', sans-serif;padding:0;margin:0;" /></span>&nbsp;<a id="emailEdit" data-edit-state="false" href="javascript:void(0);"><i class="icon-pencil"></i></a>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="row-fluid">
+                    <div class="span3">
+                      <label><strong>Roles</strong>
+                        <!--<% if (@curUserRole.include?('admin')) %>
+                            <a id="adminRoleAssign" href="javascript:void(0);"><i class="icon-pencil"></i></a>
+                        <% end %>-->
+                      </label>
+                      <span><a href="javascript:void(0);" id="assignedRoles"></a>&nbsp;
+                      <select id="selectAssignedRoles" multiple="multiple" style="display:none;margin:0 0 0 -12px;padding:0;border:0 !important;outline:none !important;">
+                        <% @roles.each do |t| %>
+                            <option value="<%= t.id.to_s %>"><%= t.name.strip %></option>
+                        <% end %>
+                      </select>
+                      </span>
+                    </div>
+                  </div>
+
+                  <p></p>
+                  <!--<button class="btn">Submit</button>-->
+                </fieldset>
+              </div>
+            </div>
+            <!--<div class="row">
+              <div class="span12">
+                <fieldset>
+                  <legend style="font-size:16px;">Personal information</legend>
+
+                  <div class="row-fluid">
+                    <div class="span12">
+                      <div class="row-fluid">
+                        <div class="span3"><strong>First Name</strong></div>
+                        <div class="span9">non-applicable</div>
+                      </div>
+                      <div class="row-fluid">
+                        <div class="span3"><strong>Last Name</strong></div>
+                        <div class="span9">non-applicable</div>
+                      </div>
+                      <div class="row-fluid">
+                        <div class="span3"><strong>Age</strong></div>
+                        <div class="span9">non-applicable</div>
+                      </div>
+                      <div class="row-fluid">
+                        <div class="span3"><strong>Gender</strong></div>
+                        <div class="span9">non-applicable</div>
+                      </div>
+                      <div class="row-fluid">
+                        <div class="span3"><strong>Date of Birth</strong></div>
+                        <div class="span9">non-applicable</div>
+                      </div>
+                      <div class="row-fluid">
+                        <div class="span3"><strong>Hometown</strong></div>
+                        <div class="span9">non-applicable</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p></p>
+                  <!--<button class="btn">Submit</button>
+                </fieldset>
+              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<%= javascript_include_tag 'manager/profile' %>

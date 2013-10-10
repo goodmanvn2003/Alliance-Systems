@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <%= stylesheet_link_tag    "fonts/bauman", :media => "all" %>
+  <%= stylesheet_link_tag    "fonts/inder", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/bootstrap.min", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/bootstrap-fileupload.min", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/bootstrap-responsive.min", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/messenger", :media => "all" %>
+  <%= stylesheet_link_tag	   "manager/messenger-spinner", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/messenger-theme-air", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/manager", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/codemirror", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/show-hint", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/elegant", :media => "all" %>
+  <%= stylesheet_link_tag    "manager/wysiwyg", :media => "all" %>
+
+  <%= javascript_include_tag "manager/sha-256" %>
+  <%= javascript_include_tag "manager/wysiwyg-editor" %>
+  <%= javascript_include_tag "manager/jquery-1.9.1.min" %>
+  <%= javascript_include_tag "manager/jqueryui.min" %>
+  <%= javascript_include_tag "manager/bootstrap.min" %>
+  <%= javascript_include_tag "manager/modernizr.min" %>
+  <%= javascript_include_tag "manager/messenger.min" %>
+  <%= javascript_include_tag "manager/messenger-theme-future" %>
+  <%= javascript_include_tag "manager/wysiwyg-toolbar" %>
+  <%= javascript_include_tag "manager/codemirror" %>
+  <%= javascript_include_tag "manager/show-hint" %>
+  <%= javascript_include_tag "manager/javascript-hint" %>
+  <%= javascript_include_tag "manager/xml-hint" %>
+  <%= javascript_include_tag "manager/html-hint" %>
+  <%= javascript_include_tag "manager/codemirror_modes/xml" %>
+  <%= javascript_include_tag "manager/codemirror_modes/javascript" %>
+  <%= javascript_include_tag "manager/codemirror_modes/css" %>
+  <%= javascript_include_tag "manager/codemirror_modes/htmlmixed" %>
+  <%= javascript_include_tag "manager/codemirror_modes/ruby" %>
+
+  <%= csrf_meta_tag %>
+</head>
+<body>
+
+    <!-- NO-SCRIPT WARNING -->
+    <noscript>
+      <div id="noscript-overlay" style="position:fixed;top:0;right:0;background:black;bottom:0;left:0;z-index:9999;">
+        <div style="display:block;position:fixed;top:48%;left:41%;right:41%;bottom:48%;text-align:center;color:white;">
+          <div style="font-size:24px;margin:16px;">We say:</div>
+          <blockquote style="color:white;">Javascript is required; please activate it!</blockquote>
+        </div>
+      </div>
+    </noscript>
+    <!-- END -->
+
+    <%= yield %>
+
+</body>
+</html>

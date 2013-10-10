@@ -1,0 +1,64 @@
+<div id="uploadDiv" style="position:absolute;top:-250px;opacity:0;overflow:hidden:width:0;height:0;">
+	<%= form_tag( '/upload', :multipart => true, :id => 'fileUpload', :target => "uploadIframe" ) do %>
+		<%= text_field_tag 'filePath' %>
+		<%= text_field_tag 'fileCategory' %>
+		<%= file_field 'fileUpload', 'datafile' %>
+		<%= submit_tag "Upload" %>
+	<% end %>
+	<iframe id="uploadIframe" name="uploadIframe" ></iframe>
+</div>
+<div class="container" style="margin-bottom: 25px;">
+	
+		<div class="row-fluid">
+  			<div class="span3">
+  			
+  				<div class="css-treeview">
+				    <!-- content will be loaded here -->
+				</div>
+  			
+  			
+  			</div>
+  			
+  			<div class="span9">
+  				<div id="fileEdit" class="fileItem" style="display:none;">
+  					<div>
+						<div class="row-fluid">
+							<div style="overflow:hidden;">
+								<div style="float:left;">
+									<h4 id="textFileTitle">Content</h4>
+								</div>
+								<div style="float:right;">
+                                    <button id="codeCleanupBtn" class="btn">reformat code</button>
+  									<button id="fileSaveBtn" class="btn btn-primary">save</button>
+  								</div>
+							</div>
+							
+  							<div style="text-align:left;">
+  								<textarea id="fileText" rows="20" style="width:97%;text-align:left;font-family:'Courier New',sans-serif;">
+  								</textarea>
+  							</div>
+						</div>
+  					</div>
+  				</div>
+  				<div id="imageViewer" class="fileItem" style="display:none;">
+  					<div>
+						<div class="row-fluid">
+							<div style="overflow:hidden;">
+								<div style="float:left;">
+									<h4 id="imgFileTitle">Content</h4>
+								</div>
+							</div>
+							
+  							<div style="text-align:left;">
+  								<img id="imagePreview" src="" style="display:block;width:100%;" />
+  							</div>
+						</div>
+  					</div>
+  				</div>
+  			</div>
+  			
+		</div>
+	
+</div>
+
+<%= javascript_include_tag "manager/files" %>

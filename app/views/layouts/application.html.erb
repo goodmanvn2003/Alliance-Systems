@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="ngSanitize">
+<head>
+  <meta name="description" content="<%= @appDescription.nil? ? '' : @appDescription.strip %>">
+  <%
+  	if (!@metas.nil?) 
+  		@metas.each do |m| %>
+  	<%= m.to_s.html_safe %>
+  <% 	end 
+	end
+  %>	
+  
+  <% 
+  	if (!@css.nil?)
+  		@css.each do |c| %>
+  	<%= stylesheet_link_tag c.html_safe %>
+  <% 
+  		end
+  	end   
+  %>
+  <%= javascript_include_tag "manager/jquery-1.9.1.min" %>
+  <%= javascript_include_tag "manager/angular.min" %>
+  <%= javascript_include_tag "manager/angular-sanitize.min" %>
+  <%= javascript_include_tag "manager/modernizr.min" %>
+  <% 
+  	if (!@js.nil?)
+  		@js.each do |j| %>
+  	<%= javascript_include_tag j.html_safe %>
+  <% 
+  		end 
+	end
+  %>
+  <title><%= @appName.nil? ? '' : @appName.strip %></title>
+  <!--<%= csrf_meta_tags %>-->
+</head>
+<body>
+<div style="color:white;">
+  <%= flash[:systemWarning].nil? ? '' : flash[:systemWarning].html_safe %>
+</div>
+
+<%= yield %>
+
+</body>
+</html>

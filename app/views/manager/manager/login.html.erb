@@ -1,0 +1,154 @@
+<style type="text/css">
+  body {
+      background: url(/assets/deep-bg.jpg) center center no-repeat fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+  }
+</style>
+
+<!-- Reset Password Modal -->
+<div id="resetPasswordModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">Password Reset (Step 1)</h3>
+  </div>
+  <div class="modal-body">
+        <p>Please provide us with your registered email:</p>
+        <input style="width:96%;" type="text" id="resetEmail"/>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">close</button>
+    <button class="btn btn-primary" id="beginResetPasswordBtn">proceed...</button>
+  </div>
+</div>
+
+<!-- Detailed Reset Password Modal -->
+<div id="resetPasswordDetailedModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">Password Reset (Step 2)</h3>
+  </div>
+  <div class="modal-body">
+            <p>Request permit code:</p>
+            <input style="width:96%;" type="text" id="requestCode"/>
+
+            <p>New password:</p>
+            <input style="width:96%;" type="password" id="resetPassword"/>
+
+            <p>New password confirmation:</p>
+            <input style="width:96%;" type="password" id="resetPasswordConfirmation"/>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">close</button>
+    <button class="btn btn-primary" id="doResetPasswordBtn">proceed...</button>
+  </div>
+</div>
+
+<!-- Register another administrator account -->
+<div id="userRegistration" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">Registration</h3>
+  </div>
+  <div class="modal-body">
+          <h4>Account Registration</h4>
+
+          <p>Login:</p>
+          <input type="text" style="width:96%;" id="adminModalAccountName"/>
+
+          <p>Email:</p>
+          <input type="text" style="width:96%;" id="adminModalAccountEmail"/>
+
+          <p>Password:</p>
+          <input type="password" style="width:96%;" id="adminModalAccountPass"/>
+
+          <p>User Password:</p>
+          <input type="password" style="width:96%;" id="adminModalAccountPassConfirm"/>
+
+          <br />
+          <p><strong>Please answer the following question:</strong></p>
+          <span id="captchaText"></span>&nbsp;&nbsp;<input type="text" style="width:15px;" id="adminModalAccountCaptcha"/>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true" id="btnUserRegCancelBtn">cancel</button>
+    <button class="btn btn-primary" id="btnUserRegCreateBtn">create</button>
+  </div>
+</div>
+
+<div class="center text-center" style="padding:128px 0 128px 0;">
+  <% if (User.count == 0) %>
+      <h3 style="margin: 32px 0 32px 0;color: white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Welcome to Rx CMS</h3>
+      <h5 style="color:white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Create an administrator account</h5>
+  <% else %>
+      <h3 style="margin: 32px 0 32px 0;color: white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Welcome to Rx CMS</h3>
+  <% end %>
+
+  <form id="loginForm" name="loginForm" action="/auth/local" method="post">
+    <% if (!flash[:success].nil?) %>
+
+        <p style="color:white;"><%= flash[:success].html_safe %></p>
+
+    <% end %>
+    <% if (!flash[:msg].nil?) %>
+
+        <p style="color:white;"><%= flash[:msg].html_safe %></p>
+
+    <% end %>
+    <% if (!flash[:err].nil?) %>
+
+        <p style="color:white;"><%= flash[:err].html_safe %></p>
+
+    <% end %>
+    <% if (!flash[:warn].nil?) %>
+
+        <p style="color:white;"><%= flash[:warn].html_safe %></p>
+
+    <% end %>
+    <div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>
+      <input type="text" id="loginFormAccountName" name="login" placeholder="username" value="<%= !flash[:login].nil? ? flash[:login] : '' %>">
+    </div>
+    <br/>
+
+    <div class="input-prepend"><span class="add-on"><i class="icon-cog"></i></span>
+      <input type="password" id="loginFormAccountPass" name="password" placeholder="passwords (required)">
+    </div>
+    <br/>
+
+    <% if (User.count == 0) %>
+        <div class="input-prepend"><span class="add-on"><i class="icon-cog"></i></span>
+          <input type="password" id="loginFormAccountPassConfirm" name="password_confirmation" placeholder="passwords again (required)">
+        </div>
+        <br/>
+
+        <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span>
+          <input type="text" id="loginFormAccountEmail" name="email" placeholder="your email (required)">
+        </div>
+        <br/>
+    <% end %>
+    <!--<div style="width:247px;margin:auto;text-align:left;margin-bottom: 16px;">
+      <input style="float:left;" id="loginFormRememberMe" type="checkbox" /><label style="padding-left:16px;" for="loginFormRememberMe">Remember</label>
+    </div>-->
+
+    <% if (User.count == 0) %>
+        <h5 style="color:white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Create your first application</h5>
+
+        <div class="input-prepend"><span class="add-on"><i class="icon-book"></i></span>
+          <input type="text" id="loginFormNewAppName" name="newApp" placeholder="application name (required)" value="">
+        </div>
+        <br/>
+
+        <div class="input-prepend"><span class="add-on"><i class="icon-info-sign"></i></span>
+          <input type="text" id="loginFormNewAppName" name="newAppDesc" placeholder="application description" value="">
+        </div>
+        <br/>
+    <% end %>
+
+    <input id="loginFormSubmit" type="submit" value="<%= User.count == 0 ? 'create' : 'log in' %>" class="btn btn-primary"/>&nbsp;
+    <% if (User.count > 0) %>
+        <a href="#userRegistration" class="btn btn" data-toggle="modal" data-backdrop="static" data-keyboard="false"><i class="icon-plus"></i></a>
+
+        <a href="#resetPasswordModal" role="button" id="loginFormForgetSth" class="btn btn" data-toggle="modal" data-backdrop="static" data-keyboard="false"><i class="icon-question-sign"></i></a>
+    <% end %>
+  </form>
+</div>
+
+<%= javascript_include_tag "manager/login" %>

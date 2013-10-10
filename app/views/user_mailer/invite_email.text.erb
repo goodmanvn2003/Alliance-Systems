@@ -1,0 +1,9 @@
+A user with email "<%= @user.email.strip %>" would like to invite you to join in workspace "<%= @workspace.strip %>"
+-------------------------------------------------------------------
+Just click on the link below to accept the request:
+
+<%= "http://#{@url.html_safe}" %>
+
+Thanks for joining us!
+--------------------------------------------------------------------
+This email was automatically generated. Therefore, do not reply to this.
