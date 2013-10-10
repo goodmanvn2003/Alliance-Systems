@@ -8,9 +8,10 @@ function getSelectedGroupFromList() {
     return selectedGroup;
 }
 
+// Refresh user list for group
 function refreshUserListForGroup(groupId) {
+    $("#overlay").fadeIn("fast");
     $.getJSON("/manager/u/services/list/" + groupId,function (response) {
-        $("#overlay").fadeIn("fast");
         $("#uList li:not(:first)").remove();
 
         if (response.status == "success") {
@@ -60,11 +61,6 @@ $(function () {
     $(".groupList").on("click", function () {
         $(".groupList").removeClass("active");
         $(this).addClass("active");
-
-        Messenger.options = {
-            extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
-            theme: 'air'
-        };
 
         // Load users for such a group
         var groupId = $($(this).find("a:first")).attr("data-group-id");

@@ -21,6 +21,10 @@ $(function () {
         $("#userRegistration").modal("show");
     }
 
+    $("#loginForm").submit(function(){
+        $("#loginFormSubmit").attr("disabled","disabled");
+    });
+
     $("#resetPasswordModal").on("shown", function () {
         // don't do anything
     });
@@ -133,12 +137,15 @@ $(function () {
 
     $("#userRegistration").on("shown", function(){
         generate_captcha();
+        $($(this).find("#btnUserRegCreateBtn")).removeAttr("disabled");
+        $($(this).find("#btnUserRegCancelBtn")).removeAttr("disabled");
     });
 
     $("#btnUserRegCreateBtn").on("click", function(e){
         e.stopPropagation();
 
-        var errors = "";
+        var errors = "",
+            $this = $(this);
         /*if ($("#adminModalAccountName").val().length < 5)
             errors += "login name is too short or empty<br />";
         if ($("#adminModalAccountEmail").val().length > 0) {
@@ -170,6 +177,9 @@ $(function () {
                 "password_confirmation": $("#adminModalAccountPassConfirm").val()
             };
 
+            $this.attr("disabled","disabled");
+            $("#btnUserRegCancelBtn").attr("disabled","disabled");
+
             $.post("/manager/captcha/services/verify", {
                 'captcha' : $("#adminModalAccountCaptcha").val().trim()
             }, function(response){
@@ -190,15 +200,25 @@ $(function () {
                             generate_captcha();
                             Messenger().post({ message : "unable to process your request, please try again with different email and login",
                                 type : "error" });
+                            $this.removeAttr("disabled");
+                            $("#btnUserRegCancelBtn").removeAttr("disabled");
                         }
                     }).error(function(){
                             Messenger().post({ message : "there was a problem when your request is being processed",
                                 type : "error" });
+                            $this.removeAttr("disabled");
+                            $("#btnUserRegCancelBtn").removeAttr("disabled");
                     });
                 }
                 else
+                {
+                    $this.removeAttr("disabled");
+                    $("#btnUserRegCancelBtn").removeAttr("disabled");
                     generate_captcha();
+                }
             }).error(function(){
+                $this.removeAttr("disabled");
+                $("#btnUserRegCancelBtn").removeAttr("disabled");
                 Messenger().post("unable to contact server");
             });
 
