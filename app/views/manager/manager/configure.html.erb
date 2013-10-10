@@ -1,0 +1,220 @@
+<!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
+        
+        <!--Create Modal Dialog -->
+        <div id="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="myModalLabel">New configuration item</h3>
+		  </div>
+		  <div class="modal-body">
+		    <div class="container-fluid">
+		    	<div class="row-fluid">
+		    		<div class="span2" style="padding:5px;">Key</div>
+		    		<div class="span5">
+		    			<input type="text" value="" id="txtNewKey" maxlength="64" placeholder="unique key" maxlength="32" />
+		    			<div style="font-size:10px;margin-top:-5px;margin-bottom:10px;margin-left:3px;line-height:1.2em;">* follows pattern [a-zA-Z]+ and limited to at most 32 characters</div>
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span2" style="padding:5px;">Value</div>
+		    		<div class="span8"><textarea id="txtNewValue" rows="20" placeholder="value of key" style="width:97%;"></textarea></div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span2" style="padding:5px;">Category</div>
+		    		<div class="span5">
+			    		<select id="selectNewCat">
+			    			<option value="config">config</option>
+			    			<option value="app">app</option>
+     						<option value="template">template</option>
+     						<option value="placeholder">placeholder</option>
+     						<option value="css">stylesheet</option>
+     						<option value="js">javascript</option>
+     						<option value="page">page</option>
+     						<option value="meta">meta</option>
+     						<option value="ruby">ruby</option>
+                            <option value="locale">locale</option>
+                            <option value="label">label</option>
+                            <option value="article">article</option>
+     					</select>
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span2" style="padding:5px;">Mimetype</div>
+		    		<div class="span5">
+			    		<select id="selectNewMime">
+			    			<option value="text/plain">text/plain</option>
+     						<option value="text/html">text/html</option>
+     						<option value="text/xml">text/xml</option>
+     						<option value="text/css">text/css</option>
+     						<option value="text/javascript">text/javascript</option>
+     						<option value="image/gif">image/gif</option>
+     						<option value="image/png">image/png</option>
+     						<option value="image/jpg">image/jpg</option>
+     						<option value="image/jpeg">image/jpeg</option>
+     						<option value="meta">image/jpg</option>						    		
+     					</select>
+		    		</div>
+		    	</div>
+		    </div>
+		  </div>
+		  <div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		    <button id="createbtn" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" disabled="disabled" onclick="createMetadata()">Create</button>
+		  </div>
+		</div>
+		<!-- EOM -->
+		
+		<!-- delete modal -->
+		<div id="deletemodal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    <h3>Remove configuration item(s)</h3>
+		  </div>
+		  <div class="modal-body">
+		    <p id="deleteMsg">Are you sure you want to do this?</p>
+		  </div>
+		  <div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		    <button id="deletebtn" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="deleteMetadata()">Ok, proceed...</button>
+		  </div>
+		</div>
+		<!-- EOM -->
+
+        <div id="container" class="container">
+        	
+        	<h3>Debugging Console</h3>
+					
+					<div>
+						<ul class="inline">
+  							<li><i class="icon-plus"></i>&nbsp;<span><a href="#modal" data-toggle="modal" onclick="reloadViewonCreateMetadata()">Create</a></span></li>
+  							<li><i class="icon-remove"></i>&nbsp;<span><a href="#deletemodal" onclick="deleteCheckItems()" data-toggle="modal">Delete</a></span></li>
+  							<li><i class="icon-refresh"></i>&nbsp;<span><a href="javascript:location.reload();">Reload</a></span></li>
+  							<li>
+  							   filter by&nbsp;
+  							   <input id="txtFilter" type="text" style="width:150px;margin-top:12px;" />
+  							</li>
+						</ul>
+					</div>
+					
+					<div style="overflow-x:auto;">
+            		<table id="configTable" style="max-width:none;" class="table">
+              			<thead>
+                			<tr>
+                  				<th width="5%">#</th>
+                  				<th width="15%">Key</th>
+                  				<th width="60%">Value</th>
+                  				<th width="20%">Type</th>
+                			</tr>
+              			</thead>
+              			<tbody>
+              				<tr id="tr_sample" style="display:none;">
+                  				<td data-attr="selector" style="cursor:pointer;"></td>
+                  				<td>
+                  					<div style="max-height:175px;overflow-y:auto;cursor:pointer;">
+	                  					<span>
+	                 						
+	                 					</span>
+	                 					<input type="text" class="input" data-attr="editor" maxlength="64" style="width:90%;display:none;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;" />
+                  					</div>
+                 				</td>
+                  				<td data-attr="nocheck">
+                  					<div style="max-height:408px;width:512px;overflow:auto;cursor:pointer;">
+	                  					<span>
+	                 						
+	                 					</span>
+	                 					<textarea class="input" data-attr="editor" rows="20" style="width:96%;display:none;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;max-height:408px;"></textarea>
+                  					</div>
+                 				</td>
+                  				<td data-attr="nocheck" style="cursor:pointer;">
+                  					<span>
+                 						
+                 					</span>
+                 					<select class="input" data-attr="editor" style="width:90%;display:none;">
+                 						<option value="config">config</option>
+                 						<option value="app">app</option>
+			     						<option value="template">template</option>
+			     						<option value="placeholder">placeholder</option>
+			     						<option value="css">stylesheet</option>
+			     						<option value="js">javascript</option>
+			     						<option value="page">page</option>
+			     						<option value="meta">meta</option>
+			     						<option value="ruby">ruby</option>
+                                        <option value="locale">locale</option>
+                                        <option value="label">label</option>
+                                        <option value="article">article</option>
+                 					</select>
+                  				</td>
+                			</tr>
+              			
+              				<% @metadatas.each do |t| %>
+                			<tr data-id="<%= t.id.to_s.html_safe %>">
+                  				<td data-attr="selector" style="cursor:pointer;"><%= t.id.to_s.html_safe %></td>
+                 				<td>
+                 					<div style="max-height:175px;overflow-y:auto;cursor:pointer;">
+	                 					<span>
+	                 						<%= t.key.strip.html_safe %>
+	                 					</span>
+	                 					<input type="text" class="input" data-attr="editor" maxlength="64" style="width:100%;display:none;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;" value="<%= t.key.strip.html_safe %>" />
+                 					</div>
+                 				</td>
+                  				<td data-attr="nocheck">
+                  					<div style="max-height:408px;width:512px;overflow:auto;cursor:pointer;">
+	                  					<span style="display:block;width:auto;">
+	                 						<%= t.value.strip %>
+	                 					</span>
+	                 					<!--<input type="text" class="input" data-attr="editor" maxlength="256" style="width:90%;display:none;" />-->
+	                 					<textarea class="input" data-attr="editor" rows="20" style="width:96%;display:none;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;max-height:408px;"><%= t.value.strip %></textarea>
+                  					</div>
+                 				</td>
+                  				<td data-attr="nocheck" style="cursor:pointer;">
+                  					<span>
+                 						<%= t.cat.strip.html_safe %>
+                 					</span>
+                 					<select class="input" data-attr="editor" style="width:90%;display:none;">
+                 						<option value="config">config</option>
+                 						<option value="app">app</option>
+                 						<option value="template">template</option>
+                 						<option value="placeholder">placeholder</option>
+                 						<option value="css">stylesheet</option>
+                 						<option value="js">javascript</option>
+                 						<option value="page">page</option>
+                 						<option value="meta">meta</option>
+                 						<option value="ruby">ruby</option>
+                                        <option value="locale">locale</option>
+                                        <option value="label">label</option>
+                                        <option value="article">article</option>
+                 					</select>
+                 				</td>
+                			</tr>
+                			<% end %>
+                			
+                		</tbody>
+            		</table>
+            		</div>
+            		
+            		<div style="text-align:justify;margin-bottom: 15px;">
+            			<h4>How to use</h4>
+            			<div>
+            				Just click on a cell, it will become editable and lets you edit information.
+            			</div>
+            		</div>
+            	
+
+            <footer>
+                <p>&copy; Custom built by Anh Nguyen, 2013</p>
+            </footer>
+
+        </div> <!-- /container -->
+
+        <%= javascript_include_tag "manager/manager" %>
+
+        <!--<script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>-->

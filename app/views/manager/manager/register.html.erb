@@ -1,0 +1,51 @@
+<style type="text/css">
+    body {
+        background: url(/assets/deep-bg.jpg) center center no-repeat fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
+
+<div class="center text-center" style="padding:128px 0 128px 0;">
+  <h3 style="margin: 32px 0 32px 0;color: white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Welcome to Alliance CMS</h3>
+  <h5 style="color:white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">You have just been invited</h5>
+  <% if (flash[:err].nil?) %>
+    <h5 style="color:white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">Please fill out the following form to complete your registration</h5>
+  <% else %>
+    <h5 style="color:white;text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);">There were errors, please review the messages below</h5>
+  <% end %>
+  <form id="register" name="register" method="post" action="/auth/local/invitation" style="color:white;margin:auto;">
+    <div>
+      <%= flash[:err].nil? ? '' : flash[:err].strip.html_safe %>
+    </div>
+    <br />
+    <input name="invitation_id" type="hidden" value="<%= params[:invitation_id].nil? ? '' : params[:invitation_id].strip %>" />
+    <div class="input-prepend"><span class="add-on"><i class="icon-user"></i></span>
+        <input type="text" id="accountName" name="login" placeholder="login name" />
+    </div>
+    <br />
+
+    <div class="input-prepend"><span class="add-on"><i class="icon-cog"></i></span>
+        <input type="password" id="accountPass" name="password" placeholder="password" />
+    </div>
+    <br />
+    <div class="input-prepend"><span class="add-on"><i class="icon-cog"></i></span>
+        <input type="password" id="accountPassConfirm" name="password_confirmation" placeholder="password confirmation"/>
+    </div>
+    <br />
+    <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span>
+        <input type="text" id="accountEmail" name="email" placeholder="email address" />
+    </div>
+    <br />
+    <!--<div class="input-prepend">
+      <span class="add-on" style="color:black;">What is the result of...?</span>
+      <input id="prependedInput" type="text">
+    </div>-->
+    <br />
+    <input type="submit" class="btn" value="Submit" />
+  </form>
+</div>
+
+<%= javascript_include_tag 'manager/register' %>

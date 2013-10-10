@@ -1,0 +1,161 @@
+<%
+   # Initializers
+   @isVersioning = @enginesFlags.has_key?('CompliancePlugin') ? (@enginesFlags['CompliancePlugin']['status']['versioning'] == "yes") : false
+   @isCompliance = @enginesFlags.has_key?('CompliancePlugin') ? (@enginesFlags['CompliancePlugin']['status']['compliance'] == "yes") : false
+%>
+<div id="createModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">Create page</h3>
+  </div>
+  <div class="modal-body">
+  	<div class="row-fluid">
+  		<div class="span3" style="padding:5px;">Name</div>
+  		<div class="span8">
+	  		<input type="text" value="" id="createModalName" maxlength="32" placeholder="unique name" />
+  		</div>
+  	</div>
+  	<div class="row-fluid">
+  		<div class="span3" style="padding:5px;">Template</div>
+  		<div class="span8">
+	  		<select id="createModalTemplateSelect">
+                <option value=""></option>
+	  			<% @listOfTemplates.each do |tpl| %>
+	  				<option value="<%= tpl.id.to_s %>"><%= tpl.key.to_s.strip.html_safe %></option>
+	  			<% end %>
+	  		</select>
+  		</div>
+  	</div>
+  </div>
+  <div class="modal-footer">
+    <button id="createModalBtnCreate" class="btn" data-dismiss="modal" aria-hidden="true" disabled="disabled">Close</button>
+  </div>
+</div>
+
+<div id="editModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">Edit page</h3>
+  </div>
+  <div class="modal-body">
+  	<div id="editModalContent" style="display:none;">
+	  	<div class="row-fluid">
+	  		<div class="span3" style="padding:5px;">Name</div>
+	  		<div class="span8"><input type="text" value="" id="editModalName" /></div>
+	  	</div>
+	  	<div class="row-fluid">
+	  		<div class="span3" style="padding:5px;">Template</div>
+	  		<div class="span8">
+		  		<select id="editModalTemplateSelect">
+                    <option value=""></option>
+		  			<% @listOfTemplates.each do |tpl| %>
+		  				<option value="<%= tpl.id.to_s %>"><%= tpl.key.to_s.strip.html_safe %></option>
+		  			<% end %>
+		  		</select>
+	  		</div>
+	  	</div>
+  	</div>
+  	<div id="editModalMsg" style="display:none;">
+  		<h5>Unfortunately, you haven't chosen any template yet</h5>
+  	</div>
+  </div>
+  <div class="modal-footer">
+    <button id="editModalBtnSave" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
+<div id="deleteModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">Delete page</h3>
+  </div>
+  <div class="modal-body">
+    <p>You are about to delete a page. Are you sure?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary" data-dismiss="modal" onclick="deletePage()">Delete</button>
+  </div>
+</div>
+
+<!-- End of modal section -->
+
+<!-- Code Compare Modal -->
+
+<div id="codeCompareModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Revision Comparison</h3>
+  </div>
+  <div class="modal-body">
+    <div id="codeCompareModalBody" style="display:none;">
+      <div style="display:block;overflow:hidden;margin:10px 0 10px 0;">
+        <div style="float:left;font-weight:bold;">Current Content</div>
+        <div style="float:right;font-weight:bold;"><span id="codeCompareModalOtherVersion"></span></div>
+      </div>
+      <div id="compareView">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" id="codeCompareModalRevertBtn">revert to this revision</button>
+  </div>
+</div>
+
+<!-- End of modal section -->
+
+<div class="container" style="margin-bottom: 25px;">
+
+	<div class="">
+		<div class="row-fluid">
+  			<div class="span3">
+  				<ul id="pageList" class="nav nav-list">
+  					<li class="nav-header">Pages
+  						&nbsp;|&nbsp;<span><a href="#createModal" data-toggle="modal" data-backdrop="static" data-keyboard="false">+</a></span>
+  						&nbsp;<span><a href="#editModal" data-toggle="modal" onclick="getInfoForPageEdit()" data-backdrop="static" data-keyboard="false">#</a></span>
+  						&nbsp;<span><a href="#deleteModal" data-toggle="modal">-</a></span>
+  					</li>
+              		<% @pages.each do |t| %>
+              			<li class="listItem"><a href="javascript:void(0);" data-id="<%= t.id.to_s.html_safe %>" data-destId="<%= t.MetadataAssociation.first.nil? ? "" : t.MetadataAssociation.first.destId.to_s %>"><%= t.key.strip.html_safe %></a></li>
+              		<% end %>
+              	</ul>
+                <% if (@isVersioning) %>
+                <!-- Item history section -->
+                <div class="historyWidget" data-page="0">
+                    <ul id="historyList" class="nav nav-list historyList" style="overflow:hidden;">
+                        <li class="nav-header">Changes</li>
+                        <!--<li style="font-size:12px;"><i class="icon-pencil"></i>&nbsp;<span>Anh Nguyen</span>&nbsp;(<span>1 hour ago</span>)</li>
+                        <li style="font-size:12px;"><i class="icon-pencil"></i>&nbsp;<span>Anh Nguyen</span>&nbsp;(<span>2 days ago</span>)</li>-->
+                    </ul>
+                    <div style="overflow:hidden;padding-left:15px;padding-right:15px;">
+                        <div style="font-size:12px;display:none;float:left;margin-right:5px;" class="historyNext"><a href="javascript:void(0);" id="historyListNext"><i class="icon-chevron-right"></i>&nbsp;next</a></div>
+                        <div style="font-size:12px;display:none;float:left;"  class="historyPrev"><a href="javascript:void(0);" id="historyListPrev"><i class="icon-chevron-left"></i>&nbsp;prev</a></div>
+                        <div style="font-size:12px;float:right;" class="historyPage"></div>
+                    </div>
+                </div>
+                <!-- Item history section -->
+                  <% end %>
+  			</div>
+  			<div class="span9" style="min-height:512px;overflow:hidden;">
+  				<div>
+  					<div style="overflow: hidden;">
+		  				<div id="curPageTitleDiv" style="display:none;float:left;">
+		  					<h3><span id="curPageTitle"></span></h3>
+                          <% if (@isVersioning) %>
+                                <div style="margin:-16px 0 16px 0;font-size:12px;">
+                                  <span id="versionNumberPage"><i class="icon-check"></i>&nbsp;current</span>&nbsp;<span id="switchToCurrentPage" style="display:none;">(<a href="javascript:void(0);">switch to current</a>)</span>
+                                </div>
+                            <% end %>
+		  				</div>
+		  				<div style="text-align:left;float:right">
+                            <button id="pageContentCleanupBtn" class="btn" style="margin:15px 0px 15px 0;" disabled="disabled">reformat code</button>
+		  					<button id="pageSaveBtn" class="btn btn-primary" style="margin:15px 0px 15px 0;" disabled="disabled">save</button>
+		  				</div>
+  					</div>
+	  				<div style="text-align:left;border: 1px solid #dddddd;">
+		  				<textarea id="page_quickEditor" style="width:97%;"></textarea>
+	  				</div>
+  				</div>
+  			</div>
+		</div>
+	</div>
+</div>
+
+<%= javascript_include_tag "manager/pages" %>

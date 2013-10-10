@@ -1,0 +1,97 @@
+<div class="container" style="margin-bottom: 25px;">
+  <div class="">
+    <div class="row-fluid">
+      <div style="min-height:512px;">
+        <ul class="nav nav-tabs" id="systemTabs">
+          <li><a href="#systemConfig" data-toggle="tab">System Configurations</a></li>
+          <li><a href="#langManage" data-toggle="tab">Language Management</a></li>
+        </ul>
+
+        <div class="tab-content">
+
+          <!-- System Tab -->
+          <div class="tab-pane" id="systemConfig">
+
+            <div>
+              <ul class="inline">
+                <li>
+                  filter by&nbsp;
+                  <input id="txtFilter" type="text" style="width:150px;margin-top:12px;"/>&nbsp;
+                  <span id="systemConfigTabLoadingText" style="padding:5px;display:none;">populating config items, please wait...</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <table id="configTable" style="max-width:none;" class="table">
+                <thead>
+                <tr>
+                  <th width="5%">#</th>
+                  <th width="30%">Key</th>
+                  <th width="65%">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- DUMMY -->
+                <tr id="configTableDummy" class="systemCell" style="display:none;">
+                  <td data-id=""></td>
+                  <td>
+                    <div style="max-height:175px;overflow-y:auto;cursor:pointer;">
+                      <span></span>
+                    </div>
+                  </td>
+                  <td class="systemCellEditable">
+                    <div style="max-height:175px;overflow-y:auto;cursor:pointer;">
+                      <input type="text" class="input" data-attr="editor" maxlength="64" style="width:90%;background:white;padding:0;margin:0;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;"/>
+                    </div>
+                  </td>
+                </tr>
+                <!-- DUMMY -->
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+          <!-- End -->
+
+          <!-- Language Tab -->
+          <div class="tab-pane" id="langManage">
+            <div class="row-fluid">
+              <div class="span4">
+                <h4>Supported Languages</h4>
+                <ul id="supportedLanguages" class="nav nav-pills nav-stacked">
+                  <li data-code="en_UK"><a href="#">english/UK</a></li>
+                  <li data-code="en_US"><a href="#">english/US</a></li>
+                  <li data-code="fr_FR"><a href="#">french/FR</a></li>
+                  <li data-code="de_DE"><a href="#">german/GR</a></li>
+                  <li data-code="zh_CN"><a href="#">chinese/CN</a></li>
+                  <li data-code="vi_VN"><a href="#">vietnamese/VN</a></li>
+                </ul>
+              </div>
+              <div class="span4">
+                <h4>Locale Codes</h4>
+                <ul id="supportedCodes" class="nav nav-pills nav-stacked">
+                  <li style="display:none;"><a href="#">en_UK</a></li>
+                  <li style="display:none;"><a href="#">en_US</a></li>
+                  <li style="display:none;"><a href="#">fr_FR</a></li>
+                  <li style="display:none;"><a href="#">de_DE</a></li>
+                  <li style="display:none;"><a href="#">zh_CN</a></li>
+                  <li style="display:none;"><a href="#">vi_VN</a></li>
+                </ul>
+              </div>
+              <div class="span4">
+                <h4>Operations</h4>
+                <p><button id="btnAdd" class="btnOps btn" style="display:none;">add</button></p>
+                <p><button id="btnDelete" class="btnOps btn btn-danger" style="display:none;">delete</button></p>
+              </div>
+            </div>
+          </div>
+          <!-- End -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag "manager/system" %>

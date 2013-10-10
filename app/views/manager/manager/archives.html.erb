@@ -1,0 +1,85 @@
+<!-- Recycle Modal -->
+<div id="recycleModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+    <h3 id="myModalLabel">Recycle</h3>
+  </div>
+  <div class="modal-body">
+    <p>Your item is about to be recycled and restored to its past latest version.<br />
+      Are you sure that you want to proceed?<br /><br />
+      Please type "recycle" to proceed&nbsp;&nbsp;&nbsp;<input type="text" id="permaRecycleApproval" style="margin-top:8px;" /></p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true" id="recycleCancelBtn">cancel</button>
+    <button class="btn btn-primary" id="recycleProceedBtn">proceed</button>
+  </div>
+</div>
+<!-- -->
+
+<!-- PermaDelete Modal -->
+<div id="permaDeleteModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+    <h3 id="myModalLabel">The Purge is going to be in effect...</h3>
+  </div>
+  <div class="modal-body">
+    <p>Your item and all of its versions are going to be completely removed.<br />
+      Are you sure that you want to permanently delete this item?<br /><br />
+      Please type "delete" to proceed&nbsp;&nbsp;&nbsp;<input type="text" id="permaDeleteApproval" style="margin-top:8px;">
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true" id="permaDeleteCancelBtn">cancel</button>
+    <button class="btn btn-primary" id="permaDeleteProceedBtn">proceed</button>
+  </div>
+</div>
+<!-- -->
+
+<div id="container" class="container">
+
+  <h3>Archives</h3>
+
+  <div style="overflow-x:auto;position:relative;">
+
+    <table class="table table-striped" id="tblArchives">
+      <thead>
+      <tr>
+        <th width="5%">#</th>
+        <th width="15%">Operations</th>
+        <th width="25%">Key</th>
+        <th width="55%">Value</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr id="archivesDummyItem" style="display:none;">
+        <td></td>
+        <td>
+          <a class="permaDeleteItem" href="#permaDeleteModal" data-toggle="modal" data-backdrop="static" data-keyboard="false"><i class="icon-trash"></i></a>&nbsp;
+          <a class="recycleItem" href="#recycleModal" data-toggle="modal" data-backdrop="static" data-keyboard="false"><i class="icon-retweet"></i></a>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      </tbody>
+    </table>
+    <div style="overflow:hidden;">
+        <div class="pagination" style="float:right;">
+          <ul>
+            <li class="disabled"><a class="navPrevious" href="javascript:void(0);">Prev</a></li>
+            <li><a class="navFirst" href="javascript:void(0);">First</a></li>
+            <!--<li><a class="navItem" href="#">1</a></li>
+            <li><a class="navItem" href="#">2</a></li>
+            <li><a class="navItem" href="#">3</a></li>-->
+            <li><a href="javascript:void(0);"><span class="navCurrentPage">0</span>/<span class="navMaxPage">0</span></a></li>
+            <li><a class="navLast" href="javascript:void(0);">Last</a></li>
+            <li class="disabled"><a class="navNext" href="javascript:void(0);">Next</a></li>
+          </ul>
+        </div>
+    </div>
+  </div>
+
+</div>
+
+<%= javascript_include_tag "manager/archives" %>

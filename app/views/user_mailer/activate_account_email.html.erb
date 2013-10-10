@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+<h1>Did you create an account, <%= @user.login.strip %>?</h1>
+<p>
+  Just click on the link below to activate your account:
+</p>
+<p>
+  <strong><a href="<%= "http://#{@url.html_safe}" %>"><%= "http://#{@url.html_safe}" %></a></strong>
+</p>
+<p>Thanks for joining us!</p>
+<p>--------------------------------------------------------------------</p>
+<p>This email was automatically generated. Therefore, do not reply to this.</p>
+</body>
+</html>

@@ -1,0 +1,48 @@
+body {
+	font-family: 'Inder', sans-serif;
+	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+.ui-state-highlight {
+	border: 1px dashed gray;
+	height: 1.5em; 
+	line-height: 1.2em;
+}
+
+#layoutBoard li {
+	width: 150px;
+}
+
+#container {
+	padding-bottom: 30px;
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+	body{
+		padding-top: 0 !important;
+	}
+}
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+	body{
+		padding-top: 0 !important;
+	}
+}
+ 
+/* Landscape phones and down */
+@media (max-width: 480px) {
+	body{
+		padding-top: 0 !important;
+	}
+}
+
+/* Utility class */
+.validation-error {
+	background-color: #f2dede;
+}
+
+.hidden {
+	display: none;
+}
