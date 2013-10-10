@@ -3,8 +3,8 @@ Podioror::Application.routes.draw do
   # first created -> highest priority.
 
   get '/' => 'home#index'
-  get '/:app' => 'home#display', :tpl => 'index'
-  get '/:app/:tpl' => 'home#display', :constraints => { :app => /(?!manager\b|upload\b|auth\b)\b\w+/ }
+  match '/:app' => 'home#display', :tpl => 'index'
+  match '/:app/:tpl' => 'home#display', :constraints => { :app => /(?!manager\b|upload\b|auth\b)\b\w+/ }
 
   # Download route
   get '/:app/client/dl/:filename' => 'home#serve' , :constraints => { :app => /(?!manager\b|upload\b|auth\b)\b\w+/, :filename => /([a-zA-Z0-9\-\_]+\.[a-z]{1,3})/}

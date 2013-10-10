@@ -15,7 +15,9 @@ class ApplicationController < ActionController::Base
 
   # Internal protected methods
   def manage_browser
-    logger.debug(detect_browser)
+    if (params[:controller] == 'manager/manager' and detect_browser == 'mobile')
+      raise "[Access Denied] management console is not compatible with mobile browser"
+    end
   end
 
   def called_controller
