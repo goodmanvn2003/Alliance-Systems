@@ -191,6 +191,7 @@ $(function () {
                 if (response.status == "success")
                 {
                     $this.hide(1, function(){
+                        $("#btnDelete").attr("data-id", response.data.newid);
                         $("#btnDelete").show();
                     });
                     Messenger().post("locale is successfully created");
