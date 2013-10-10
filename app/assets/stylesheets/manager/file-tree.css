@@ -1,0 +1,138 @@
+.css-treeview ul,
+.css-treeview li
+{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+ 
+.css-treeview input
+{
+    position: absolute;
+    opacity: 0;
+}
+
+.css-treeview input[type=text]
+{
+	position: relative;
+	outline: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	opacity: 1;
+	margin:0 0 0 -6px;
+	font: normal 11px 'Inder', sans-serif;
+	height: 16px;
+	color: #2d6ad2;
+}
+ 
+.css-treeview
+{
+    font: normal 11px 'Inder', sans-serif;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+ 
+.css-treeview a
+{
+    color: black;
+    text-decoration: none;
+}
+ 
+.css-treeview a:hover
+{
+    text-decoration: none;
+}
+
+.css-treeview a.upload {
+	color: #2d6ad2;
+}
+ 
+.css-treeview input + label + ul
+{
+    margin: 0 0 0 22px;
+}
+ 
+.css-treeview input ~ ul
+{
+    display: none;
+}
+ 
+.css-treeview label,
+.css-treeview label:before
+{
+    cursor: pointer;
+}
+
+.css-treeview label.imageNewFolder
+{
+	color: #2d6ad2;
+}
+ 
+.css-treeview input:disabled + label
+{
+    cursor: default;
+    opacity: .6;
+}
+ 
+.css-treeview input:checked:not(:disabled) ~ ul
+{
+    display: block;
+}
+ 
+.css-treeview label,
+.css-treeview label:before
+{
+    background: url("/assets/file-mgr-icons.png") -16px 2px no-repeat;
+}
+ 
+.css-treeview label,
+.css-treeview a,
+.css-treeview label:before
+{
+    height: 16px;
+    vertical-align: middle;
+}
+ 
+.css-treeview label
+{
+    
+}
+ 
+.css-treeview label:before
+{
+	display: inline-block;
+    width: 16px;
+    margin: 0 4px 0 0;
+    vertical-align: middle;
+    color: transparent;
+    background-position: 0px 0px;
+    content: " ";
+}
+ 
+.css-treeview input:checked + label:before
+{
+    background-position: 0px -18px;
+    content: " ";
+}
+ 
+/* webkit adjacent element selector bugfix */
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+    .css-treeview 
+    {
+        -webkit-animation: webkit-adjacent-element-selector-bugfix infinite 1s;
+    }
+ 
+    @-webkit-keyframes webkit-adjacent-element-selector-bugfix 
+    {
+        from 
+        { 
+            padding: 0;
+        } 
+        to 
+        { 
+            padding: 0;
+        }
+    }
+}

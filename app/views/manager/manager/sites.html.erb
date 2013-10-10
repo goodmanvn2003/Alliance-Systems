@@ -1,0 +1,112 @@
+<!-- Site Addition Modal -->
+<div id="addSiteModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">Add Site</h3>
+  </div>
+  <div class="modal-body">
+
+    <p>Site's name:</p>
+    <input type="text" id="siteModalName" placeholder="site name"/>
+
+    <p>Site's description:</p>
+    <input type="text" id="siteModalDescription" placeholder="site description"/>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true" id="siteCancelBtn">cancel</button>
+    <button class="btn btn-primary" id="siteCreateBtn">create</button>
+  </div>
+</div>
+
+<!-- Site Removal Modal -->
+<div id="removeSiteModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Remove Site</h3>
+  </div>
+  <div class="modal-body">
+    <p>All of your contents, including database records, files and folders will be permanently purged. Are you sure you want remove this site?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true" id="siteRemoveCancelBtn">cancel</button>
+    <button class="btn btn-primary" id="siteRemoveBtn">remove</button>
+  </div>
+</div>
+
+<div class="container" style="margin-bottom: 25px;">
+  <div class="">
+    <div class="row-fluid">
+      <div class="span3">
+        <select id="sites" style="width:100%;">
+          <option value="">[no selection]</option>
+          <% @userSites.each do |t| %>
+              <option value="<%= t['id'].to_s %>"><%= t['name'].html_safe %></option>
+          <% end %>
+        </select>
+        <br/>
+        <a href="#addSiteModal" data-toggle="modal" class="btn" data-backdrop="static" data-keyboard="false">+ add
+          site</a>&nbsp;<a href="#removeSiteModal" data-toggle="modal" class="btn btn-danger">- remove site</a>
+
+        <p/>
+        <ul id="settingsList" class="nav nav-list affix-top">
+          <% @userSitesCategories.each do |t| %>
+              <li data-key="<%= t.key.strip.html_safe %>"><a href="javascript:void(0);"><i class="icon-chevron-right"></i> <%= t.key.strip.capitalize.html_safe %></a></li>
+          <% end %>
+          <!--<li data-key="other"><a href="javascript:void(0);"><i class="icon-chevron-right"></i> other</a></li>-->
+        </ul>
+      </div>
+
+      <div id="panelContainer" class="span9">
+        <div class="panel" id="preferences" style="display:none;">
+          <fieldset>
+            <div id="legend">
+              <legend class="">Preferences</legend>
+            </div>
+
+            <!-- Name -->
+            <div class="control-group">
+              <label class="control-label" for="sitename">Site's name</label>
+
+              <div class="controls">
+                <input type="text" id="sitename" name="sitename" placeholder="site name" class="input-xlarge">
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="control-group">
+              <label class="control-label" for="sitedesc">Site's description</label>
+
+              <div class="controls">
+                <input type="text" id="sitedesc" name="sitedesc" placeholder="site description" class="input-xlarge">
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="control-group">
+              <label class="control-label">Site's creation date</label>
+
+              <div class="controls">
+                <span id="sitecreationdate"></span>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="control-group">
+              <div class="controls">
+                <button class="btn btn-primary" id="prefsSaveBtn">save changes</button>
+              </div>
+            </div>
+
+          </fieldset>
+        </div>
+
+        <!--<div class="panel" id="other" style="display:none;">
+            <h3>testing</h3>
+        </div>-->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag "manager/sites" %>

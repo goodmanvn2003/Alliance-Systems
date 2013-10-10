@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+		
+		<%= stylesheet_link_tag    "fonts/bauman", :media => "all" %>
+		<%= stylesheet_link_tag    "fonts/inder", :media => "all" %>
+		<%= stylesheet_link_tag    "manager/bootstrap.min", :media => "all" %>
+		<%= stylesheet_link_tag    "manager/bootstrap-fileupload.min", :media => "all" %>
+		<%= stylesheet_link_tag    "manager/bootstrap-responsive.min", :media => "all" %>
+		<%= stylesheet_link_tag    "manager/messenger", :media => "all" %>
+		<%= stylesheet_link_tag	   "manager/messenger-spinner", :media => "all" %>
+		<%= stylesheet_link_tag    "manager/messenger-theme-air", :media => "all" %>
+		<%= stylesheet_link_tag    "manager/manager", :media => "all" %>
+		<%= stylesheet_link_tag    "manager/codemirror", :media => "all" %>
+        <%= stylesheet_link_tag    "manager/show-hint", :media => "all" %>
+        <%= stylesheet_link_tag    "manager/merge", :media => "all" %>
+		<%= stylesheet_link_tag    "manager/elegant", :media => "all" %>
+        <%= stylesheet_link_tag    "manager/wysiwyg", :media => "all" %>
+        <%= stylesheet_link_tag    "manager/dialog", :media => "all" %>
+		<% if @mPage == "file_manager" %>
+		<%= stylesheet_link_tag "manager/file-tree", :media => "all" %>		
+		<% end %>
+
+        <%= javascript_include_tag "manager/sha-256" %>
+        <%= javascript_include_tag "manager/wysiwyg-editor" %>
+		<%= javascript_include_tag "manager/jquery-1.9.1.min" %>
+		<%= javascript_include_tag "manager/jqueryui.min" %>
+        <%= javascript_include_tag "manager/bootstrap.min" %>
+		<%= javascript_include_tag "manager/modernizr.min" %>
+		<%= javascript_include_tag "manager/messenger.min" %>
+		<%= javascript_include_tag "manager/messenger-theme-future" %>
+        <%= javascript_include_tag "manager/wysiwyg-toolbar" %>
+        <%= javascript_include_tag "manager/timeago" %>
+        <%= javascript_include_tag "manager/jquery.timer" %>
+		<%= javascript_include_tag "manager/codemirror" %>
+        <%= javascript_include_tag "manager/show-hint" %>
+        <%= javascript_include_tag "manager/javascript-hint" %>
+        <%= javascript_include_tag "manager/xml-hint" %>
+        <%= javascript_include_tag "manager/html-hint" %>
+		<%= javascript_include_tag "manager/codemirror_modes/xml" %>
+		<%= javascript_include_tag "manager/codemirror_modes/javascript" %>
+		<%= javascript_include_tag "manager/codemirror_modes/css" %>
+		<%= javascript_include_tag "manager/codemirror_modes/htmlmixed" %>
+		<%= javascript_include_tag "manager/codemirror_modes/ruby" %>
+        <%= javascript_include_tag "manager/codemirror_addons/search" %>
+        <%= javascript_include_tag "manager/codemirror_addons/searchcursor" %>
+        <%= javascript_include_tag "manager/codemirror_addons/dialog" %>
+        <%= javascript_include_tag "manager/codemirror_addons/merge/dep/diff_match_patch" %>
+        <%= javascript_include_tag "manager/codemirror_addons/merge/merge" %>
+        <%= javascript_include_tag "manager/codemirror_utils/formatting" %>
+		<% if @mPage == "file_manager" %>
+		<% end %>
+
+        <%= csrf_meta_tag %>
+    </head>
+    <body>
+        
+        <div id="overlay" style="position:fixed;top:0;right:0;background:url(/assets/backdrop-bg.png) repeat;bottom:0;left:0;z-index:9999;display:none;">
+	        <div style="display:block;position:fixed;top:48%;left:41%;right:41%;bottom:48%;">
+	        	<span style="color:white;">processing, please wait...</span>
+	        </div>
+        </div>
+        
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" id="brandSitename" style="font-family: 'Baumans', cursive;" href="javascript:window.open('/<%= session[:accessible_app].to_s[0..7].html_safe %>');"><%= session[:accessible_appname].nil? ? 'Alliance Managr' : session[:accessible_appname].to_s.strip.html_safe %></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav" style="font-family: 'Inder', sans-serif;">
+                            <li class="<%= @mPage == 'home' ? 'active' : '' %>"><a href="<%= @mPage == 'home' ? '#' : "/manager/cms/pages" %>"><i class="icon-book icon-white"></i>&nbsp;Pages</a></li>
+                            <li class="<%= @mPage == 'elements' ? 'active' : '' %>"><a href="<%= @mPage == 'elements' ? '#' : "/manager/cms/elements" %>"><i class="icon-tasks icon-white"></i>&nbsp;Elements</a></li>
+                            <li class="<%= @mPage == 'contentlib' ? 'active' : '' %>"><a href="<%= @mPage == 'contentlib' ? '#' : "/manager/cms/contentlib" %>"><i class="icon-pencil icon-white"></i>&nbsp;Contents</a></li>
+                            <li class="<%= @mPage == 'file_manager' ? 'active' : '' %>"><a href="<%= @mPage == 'file_manager' ? '#' : "/manager/cms/files" %>"><i class="icon-file icon-white"></i>&nbsp;Files</a></li>
+                            <li class="dropdown <%= @mPage == 'system' ? 'active' : '' %>">
+                                <a href="#" class="<%= @mPage != 'login' ? 'dropdown-toggle' : ''%>" <%= @mPage != 'login' ? 'data-toggle=dropdown' : ''%>><i class="icon-cog icon-white"></i>&nbsp;System <%= @mPage != 'login' ? '<b class="caret"></b>'.html_safe : ''%></a>
+                                <ul class="<%= @mPage != 'login' ? 'dropdown-menu' : ''%>" id="extensionsList">
+                                    <% if (@mPage != 'login') %>
+                                        <li class="<%= @mPage == 'system' ? 'active' : '' %>"><a href="<%= @mPage == 'system' ? '#' : "/manager/cms/system" %>">Configurations</a></li>
+                                        <li class="<%= @mPage == 'users' ? 'active' : '' %>"><a href="<%= @mPage == 'users' ? '#' : "/manager/cms/users" %>">Users &amp; Roles</a></li>
+                                        <li class="<%= @mPage == 'apps' ? 'active' : '' %>"><a href="<%= @mPage == 'apps' ? '#' : "/manager/cms/sites" %>">Sites</a></li>
+                                        <% test = @isVersioning
+                                           if (@isCompliance) %>
+                                            <li class="<%= @mPage == 'archives' ? 'active' : '' %>"><a href="<%= @mPage == 'archives' ? '#' : "/manager/cms/archives" %>">Archives</a></li>
+                                        <% end %>
+                                          <!--<li><a href="#">Access Control</a></li>
+                                        <li><a href="#">Auditing</a></li>-->
+                                    <% end %>
+                                </ul>
+                            </li>
+                            <!--<li class="<%= @mPage == 'configure' ? 'active' : '' %>"><a href="<%= @mPage == 'configure' ? '#' : '/manager/cms/configure' %>">Debugging</a></li>-->
+                            <li class="dropdown <%= @mPage == 'extensions' ? 'active' : '' %>">
+                                <a href="#" class="<%= @mPage != 'login' ? 'dropdown-toggle' : ''%>" <%= @mPage != 'login' ? 'data-toggle=dropdown' : ''%>><i class="icon-th-list icon-white"></i><%= @mPage != 'login' ? '<b class="caret"></b>'.html_safe : ''%></a>
+                                <ul class="<%= @mPage != 'login' ? 'dropdown-menu' : ''%>" id="extensionsList">
+                                    <%
+                                       if (@mPage != 'login')
+                                       if (@mountedExts.length > 0)
+                                       @mountedExts.each do |mounted| %>
+                                        <li class="<%= @mExt == mounted.name.strip ? 'active' : '' %>"><a data-link="<%= defined?(mounted.metadata) ? (!mounted.metadata['mountPoint'].nil? ? mounted.metadata['mountPoint'] : "").strip.html_safe : ""  %>" data-installer="<%= defined?(mounted.metadata) ? (!mounted.metadata['installerPoint'].nil? ? mounted.metadata['installerPoint'] : "").strip.html_safe : ""  %>" href="<%= @mExt == mounted.name.strip ? "#" : "/manager/cms/extensions?id=#{mounted.name.strip}" %>"><%= defined?(mounted.metadata) ? mounted.metadata['fullName'].strip.html_safe : "" %></a></li>
+                                    <%
+                                        end
+                                       else %>
+                                        <li><a href="#">No extensions installed</a></li>
+                                    <%   end
+                                       end
+                                    %>
+                                </ul>
+                            </li>
+                            <li>
+                              <a href="/manager/cms/apps"><i class="icon-th icon-white"></i></a>
+                            </li>
+                            <li class="divider-vertical"></li>
+                            <li class="dropdown">
+                              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user icon-white"></i>&nbsp;<%= session[:accessible_username].nil? ? '' : session[:accessible_username].to_s.html_safe %></a>
+                              <ul class="dropdown-menu">
+                                <li class="<%= @mPage == 'user_profile' ? 'active' : '' %>"><a href="<%= @mPage == 'user_profile' ? '#' : '/manager/cms/profile' %>">profile</a></li>
+                                <li><%= UserSession.find.nil? ? '' : '<a href="/auth/local/delete">log out</a>'.html_safe %></li>
+                              </ul>
+                            </li>
+
+                        </ul>
+                        
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        
+        <%= yield %>
+        
+    </body>
+</html>
+

@@ -1,0 +1,268 @@
+<%
+   # Initializers
+   @isVersioning = @enginesFlags.has_key?('CompliancePlugin') ? (@enginesFlags['CompliancePlugin']['status']['versioning'] == "yes") : false
+   @isCompliance = @enginesFlags.has_key?('CompliancePlugin') ? (@enginesFlags['CompliancePlugin']['status']['compliance'] == "yes") : false
+%>
+<!-- labels delete modal -->
+<div id="labelsDelete" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Delete Label</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to do this?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button id="labelDeleteButton" class="btn btn-primary" data-dismiss="modal" onclick="deleteLabels(this)">Delete</button>
+  </div>
+</div>
+<!-- -->
+
+<!-- labels delete modal -->
+<div id="articlesDelete" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Delete Article</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to do this?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button id="articleDeleteButton" class="btn btn-primary" data-dismiss="modal" onclick="deleteArticles(this)">Delete</button>
+  </div>
+</div>
+<!-- -->
+
+<!-- Code Compare Modal -->
+
+<div id="codeCompareModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Revision Comparison</h3>
+  </div>
+  <div class="modal-body">
+    <div id="codeCompareModalBody" style="display:none;">
+      <div style="display:block;overflow:hidden;margin:10px 0 10px 0;">
+        <div style="float:left;font-weight:bold;">Current Content</div>
+        <div style="float:right;font-weight:bold;"><span id="codeCompareModalOtherVersion"></span></div>
+      </div>
+      <div id="compareView">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" id="codeCompareModalRevertBtn">revert to this revision</button>
+  </div>
+</div>
+
+<!-- End of modal section -->
+
+<div class="container" style="margin-bottom: 25px;">
+	<div class="">
+		<div class="row-fluid">
+            <ul class="nav nav-tabs" id="myTab">
+                <li><a href="#labels" data-toggle="tab">Labels</a></li>
+                <li><a href="#articles" data-toggle="tab">Articles</a></li>
+            </ul>
+
+            <div class="tab-content">
+
+                <div class="tab-pane" id="labels">
+
+                  <div class="span9">
+                      <div>
+                        <ul class="inline">
+                          <li>
+                            filter by&nbsp;
+                            <input id="txtFilterLabel" type="text" style="width:150px;margin-top:12px;" />
+                          </li>
+                          <li>
+                            <select class="selectLanguage" id="labelsLocale" style="margin:1px 0 0 0;">
+                            </select>
+                          </li>
+                          <li>
+                            <span id="labelsTabLoadingText" style="padding:5px;display:none;">populating labels, please wait...</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div>
+
+                        <table id="labelsTable" style="max-width:none;" class="table">
+                          <thead>
+                          <tr>
+                            <th width="2%">#</th>
+                            <th width="11%"></th>
+                            <th width="20%"><span style="padding: 0 5px 0 5px;">Key</span></th>
+                            <th width="66%"><span style="padding: 0 5px 0 5px;">Value</span></th>
+                          </tr>
+                          </thead>
+                          <tbody id="labelsTableBody">
+
+                          <!-- DUMMY -->
+                          <tr class="labelsItem" id="labelsItemDummy" style="display:none;">
+                            <td data-modify-flag="unchecked" data-id=""></td>
+                            <td data-modify-flag="unchecked" style="text-align:center;">
+                              <a class="labelDelete" href="javascript:$('#labelsDelete').modal('show');" data-toggle="modal"><i class="icon-remove"></i></a>
+                              <a class="labelVersionInfo" href="javascript:void(0);"><i class="icon-check"></i></a>
+                              <a class="labelOverridingSave" href="javascript:void(0);"><i class="icon-ok"></i></a>
+                            </td>
+                            <td data-modify-flag="checked">
+                              <div style="max-height:175px;overflow-y:auto;cursor:pointer;">
+                                <input type="text" class="input" data-attr="editor" maxlength="64" style="background:transparent;width:90%;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;" />
+                              </div>
+                            </td>
+                            <td data-modify-flag="checked">
+                              <div style="max-height:175px;overflow-y:auto;cursor:pointer;">
+                                <input type="text" class="input" data-attr="editor" maxlength="64" style="background:transparent;width:90%;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;" />
+                              </div>
+                            </td>
+                          </tr>
+                          <!-- DUMMY -->
+
+                          <tr>
+                            <td data-id="">...</td>
+                            <td style="text-align:center;">
+                              <a id="aNewLabels" href="javascript:void(0);"><i class="icon-ok"></i></a>
+                            </td>
+                            <td>
+                              <div style="max-height:175px;overflow-y:auto;cursor:pointer;">
+                                <input type="text" class="input" id="newLabelsNameTxt" placeholder="new label name" maxlength="64" style="width:90%;display:block;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;" />
+                              </div>
+                            </td>
+                            <td>
+                              <div style="max-height:175px;overflow-y:auto;cursor:pointer;">
+                                <input type="text" class="input" id="newLabelsContentTxt" placeholder="new label content" maxlength="64" style="width:90%;display:block;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;" />
+
+                              </div>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+                  </div>
+
+                  <% if (@isVersioning) %>
+                      <!-- Item history section -->
+                      <div class="historyWidget span3" data-page="0">
+                        <ul id="historyList_labels" class="nav nav-list historyList" style="overflow:hidden;">
+                          <li class="nav-header">Changes</li>
+                          <!--<li style="font-size:12px;"><i class="icon-pencil"></i>&nbsp;<span>Anh Nguyen</span>&nbsp;(<span>1 hour ago</span>)</li>
+                          <li style="font-size:12px;"><i class="icon-pencil"></i>&nbsp;<span>Anh Nguyen</span>&nbsp;(<span>2 days ago</span>)</li>-->
+                        </ul>
+                        <div style="overflow:hidden;padding-left:15px;padding-right:15px;">
+                          <div style="font-size:12px;display:none;float:left;margin-right:5px;" class="historyNext"><a href="javascript:void(0);" id="historyListNext"><i class="icon-chevron-right"></i>&nbsp;next</a></div>
+                          <div style="font-size:12px;display:none;float:left;"  class="historyPrev"><a href="javascript:void(0);" id="historyListPrev"><i class="icon-chevron-left"></i>&nbsp;prev</a></div>
+                          <div style="font-size:12px;float:right;" class="historyPage"></div>
+                        </div>
+                      </div>
+                      <!-- Item history section -->
+                      <% end %>
+
+                </div>
+
+                <div class="tab-pane" id="articles">
+
+                  <div class="span9">
+                      <div>
+                        <ul class="inline">
+                          <li>
+                            filter by&nbsp;
+                            <input id="txtFilterArticle" type="text" style="width:150px;margin-top:12px;" />
+                          </li>
+                          <li>
+                            <select class="selectLanguage" id="articlesLocale" style="margin:1px 0 0 0;">
+                            </select>
+                          </li>
+                          <li>
+                            <span id="articlesTabLoadingText" style="padding:5px;display:none;">populating articles, please wait...</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div>
+
+                        <table id="articlesTable" style="max-width:none;" class="table">
+                          <thead>
+                          <tr>
+                            <th width="2%">#</th>
+                            <th width="11%"></th>
+                            <th width="20%"><span style="padding: 0 5px 0 5px;">Key</span></th>
+                            <th width="66%"><span style="padding: 0 5px 0 5px;">Value</span></th>
+                          </tr>
+                          </thead>
+                          <tbody id="articlesTableBody">
+
+                          <!-- DUMMY -->
+                          <tr class="articlesItem" id="articlesItemDummy" style="display:none;">
+                            <td data-modify-flag="unchecked" data-id=""></td>
+                            <td data-modify-flag="unchecked" style="text-align:center;">
+                              <a class="articleDelete" href="javascript:$('#articlesDelete').modal('show');" data-toggle="modal"><i class="icon-remove"></i></a>&nbsp;
+                              <a class="articleVersionInfo" href="javascript:void(0);"><i class="icon-check"></i></a>
+                              <a class="articleOverridingSave" href="javascript:void(0);"><i class="icon-ok"></i></a>
+                            </td>
+                            <td data-modify-flag="checked">
+                              <div style="max-height:175px;overflow-y:auto;cursor:pointer;">
+                                <input type="text" class="input" data-attr="editor" maxlength="64" style="background:transparent;width:90%;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;" />
+                              </div>
+                            </td>
+                            <td data-modify-flag="checked">
+                              <div style="min-height:175px;overflow-y:auto;cursor:pointer;">
+                                <div><textarea class="input" data-attr="editor" style="background:transparent;width:90%;height:600px;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;"></textarea></div>
+                              </div>
+                            </td>
+                          </tr>
+                          <!-- DUMMY -->
+
+                          <tr>
+                            <td data-id="">...</td>
+                            <td style="text-align:center;">
+                              <a id="aNewArticles" href="javascript:void(0);"><i class="icon-ok"></i></a>
+                            </td>
+                            <td>
+                              <div style="height:175px;overflow-y:auto;cursor:pointer;">
+                                <input type="text" class="input" id="newArticlesNameTxt" placeholder="new article name" maxlength="64" style="width:90%;display:block;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;" />
+                              </div>
+                            </td>
+                            <td>
+                              <div style="min-height:175px;overflow-y:auto;cursor:pointer;">
+                                <textarea type="text" class="input" id="newArticlesContentTxt" maxlength="64" style="width:90%;height:600px;display:block;border:0 !important;box-shadow:none !important;outline:0;font-family:'Courier New',sans-serif;"></textarea>
+
+                              </div>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+
+                    </div>
+
+                  <% if (@isVersioning) %>
+                      <!-- Item history section -->
+                      <div class="historyWidget span3" data-page="0">
+                        <ul id="historyList_articles" class="nav nav-list historyList" style="overflow:hidden;">
+                          <li class="nav-header">Changes</li>
+                          <!--<li style="font-size:12px;"><i class="icon-pencil"></i>&nbsp;<span>Anh Nguyen</span>&nbsp;(<span>1 hour ago</span>)</li>
+                          <li style="font-size:12px;"><i class="icon-pencil"></i>&nbsp;<span>Anh Nguyen</span>&nbsp;(<span>2 days ago</span>)</li>-->
+                        </ul>
+                        <div style="overflow:hidden;padding-left:15px;padding-right:15px;">
+                          <div style="font-size:12px;display:none;float:left;margin-right:5px;" class="historyNext"><a href="javascript:void(0);" id="historyListNext"><i class="icon-chevron-right"></i>&nbsp;next</a></div>
+                          <div style="font-size:12px;display:none;float:left;"  class="historyPrev"><a href="javascript:void(0);" id="historyListPrev"><i class="icon-chevron-left"></i>&nbsp;prev</a></div>
+                          <div style="font-size:12px;float:right;" class="historyPage"></div>
+                        </div>
+                      </div>
+                      <!-- Item history section -->
+                      <% end %>
+
+                </div>
+
+            </div>
+		</div>
+	</div>
+</div>
+
+<%= javascript_include_tag "manager/items" %>

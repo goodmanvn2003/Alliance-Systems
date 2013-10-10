@@ -1,0 +1,46 @@
+<!-- Register a site -->
+<div id="siteRegistration" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+    <h3 id="myModalLabel">Site Registration</h3>
+  </div>
+  <div class="modal-body">
+
+    <p>Site's name:</p>
+    <input type="text" id="siteModalName" placeholder="site name"/>
+
+    <p>Site's description:</p>
+    <input type="text" id="siteModalDescription" placeholder="site description"/>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true" id="siteModalCancelBtn">cancel</button>
+    <button class="btn btn-primary" id="siteModalCreateBtn">create</button>
+  </div>
+</div>
+
+<div class="center text-center" style="padding:128px 0 128px 0;">
+  <form id="appSelectForm" name="appSelectForm" action="/auth/local/app" method="post">
+    <h3 style="margin: 32px 0 32px 0;">Please select a site to manage</h3>
+    <% if (!flash[:err].nil?) %>
+        <div class="alert alert-error" style="width:256px;margin:0 auto 16px auto;text-align:left;">
+          <%= flash[:err].strip.html_safe %>
+        </div>
+    <% end %>
+    <select id="appSelect" name="appSelect">
+      <option value="" selected="selected">select a site</option>
+      <% @userSites.each do |u| %>
+          <option value="<%= u['id'].html_safe %>"><%= u['name'].html_safe %></option>
+      <% end %>
+    </select>
+    <br />
+    <p>And, a role...</p>
+    <select id="roleSelect" name="roleSelect">
+      <option value="" selected="selected">select a role</option>
+    </select>
+    <br />
+    <input class="btn btn-primary" type="submit" name="appSelectFormSubmit" value="proceed"/>&nbsp;<a href="#siteRegistration" class="btn" data-backdrop="static" data-keyboard="false" data-toggle="modal">register a site</a>&nbsp;<a class="btn btn-danger" href="/auth/local/delete">log out</a>
+  </form>
+</div>
+
+<%= javascript_include_tag "manager/select_application" %>
