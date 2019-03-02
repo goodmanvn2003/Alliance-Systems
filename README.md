@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Alliance CMS v0.1 RC
 
 [Alliance CMS](http://apps.codigobit.info/2012/06/markdown-pad-markdown-textfile-editor.html) is an open-source software and a universal content management system. It allows users to:
@@ -95,4 +94,3 @@ Alliance-Systems
 ================
 
 CMS for speed and efficiency
->>>>>>> 30fea6444ef2b422ca6251c62341f139664b5819
